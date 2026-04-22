@@ -1,0 +1,102 @@
+import { SiteConfig } from '@/site.config';
+
+export const lawDefaults: Partial<SiteConfig> = {
+  vertical: 'law',
+  serviceLabel: 'Practice Areas',
+  teamLabel: 'Our Attorneys',
+  ctaText: 'Free Consultation',
+  colors: {
+    primary: '#1a3c5e',
+    secondary: '#2c5f8a',
+    accent: '#c8a45e',
+    background: '#ffffff',
+    text: '#1a1a1a',
+  },
+  schema: {
+    type: 'LegalService',
+    priceRange: '$$',
+  },
+};
+```
+
+## Step 5: Now open Cursor Composer and paste this prompt
+
+Hit **Cmd+I** (Mac) or **Ctrl+I** (Windows) to open Composer. Paste this entire prompt:
+
+---
+```
+I'm building a multi-vertical website template for local service businesses. The project is already scaffolded with Next.js 15 (App Router), Tailwind CSS, and the folder structure is in place. There's a site.config.ts at the root that every component should import from — reference @site.config.ts for the full type.
+
+Build the following in order:
+
+1. **app/layout.tsx** — Root layout that imports config, sets CSS variables from config.colors on the <body> tag, loads Inter font from next/font/google, and wraps children in Navbar + Footer.
+
+2. **components/layout/Navbar.tsx** — Sticky top nav with: config.businessName as logo text on the left, nav links (Home, About, Services, Team, Blog, Contact) in the center, config.phone and a CTA button with config.ctaText on the right. Mobile: hamburger menu. Use config.colors.primary as the background with white text.
+
+3. **components/layout/Footer.tsx** — Dark footer with config.businessName, config.address, config.phone, config.email, quick links, and a Google Maps embed placeholder (just an iframe with src based on config.address). Copyright line at the bottom.
+
+4. **components/sections/Hero.tsx** — Full-width section with a dark overlay background. config.businessName as H1, config.tagline as subtitle, CTA button with config.ctaText that links to /contact. Responsive.
+
+5. **components/sections/About.tsx** — Two-column layout: text on left (placeholder paragraph about the firm), image placeholder on right. Section title: "About Us".
+
+6. **components/sections/Services.tsx** — Section title uses config.serviceLabel. Grid of cards (3 columns desktop, 1 mobile). For now use hardcoded placeholder data (3-4 practice areas with title and short description). Each card links to /services/[slug].
+
+7. **components/sections/Testimonials.tsx** — Section with 3 testimonial cards. Hardcoded placeholder data for now (quote, client name). Simple grid layout.
+
+8. **components/sections/CTA.tsx** — Full-width accent-colored banner with "Ready to get started?" heading, config.phone, and CTA button.
+
+9. **components/sections/FAQ.tsx** — Accordion-style FAQ section. Hardcoded 4-5 placeholder questions. Click to expand/collapse.
+
+10. **components/sections/ContactForm.tsx** — Form with fields: name, email, phone, message, and a dropdown for service/practice area. Submit button. No backend wiring yet — just the UI.
+
+11. **app/page.tsx** — Homepage that reads config.homeSections and dynamically renders the corresponding section components in order.
+
+12. **app/contact/page.tsx** — Full page with ContactForm component and a sidebar with config.address, config.phone, config.email, and Google Maps embed.
+
+Design direction:
+- Clean, modern, professional. Not generic template-looking.
+- Use Tailwind utility classes. Reference CSS variables for colors where possible.
+- Generous whitespace, clear typography hierarchy.
+- Subtle opacity/transform transitions on scroll for sections (use Intersection Observer or a simple fade-in on mount).
+- Mobile-first responsive design.
+- One H1 per page, logical heading hierarchy for SEO.
+
+Do NOT create any Sanity files yet — I'll add the CMS layer separately. Use hardcoded placeholder content for now.
+```
+
+---
+
+## Step 6: Let Cursor generate, then review
+
+Cursor will create all the files. Once it's done:
+```
+npm run dev
+```
+
+Open `localhost:3000` and check every section. Things to look for: does the nav work on mobile, do the colors match, is the layout responsive, does the homepage render sections in the right order.
+
+## Step 7: Fix issues one at a time
+
+If something looks off, highlight the component in Cursor, hit **Cmd+K**, and describe the fix. For example: "The mobile menu isn't closing when I click a link — add an onClick handler that closes the menu on navigation."
+
+## Step 8: Add pages
+
+Once the homepage looks good, prompt Cursor again:
+```
+Create the following pages using the same design system and importing from @site.config.ts:
+
+1. app/about/page.tsx — Full about page with an expanded version of the About section, team preview, and CTA at the bottom.
+
+2. app/services/page.tsx — Grid of all services/practice areas (same card style as homepage section). Use hardcoded placeholder data.
+
+3. app/services/[slug]/page.tsx — Dynamic service detail page with: H1 title, description paragraphs, sidebar with CTA and contact info. Use generateStaticParams with hardcoded slugs for now.
+
+4. app/team/page.tsx — Grid of team member cards with photo placeholder, name, title, and short bio.
+
+5. app/blog/page.tsx — Blog listing with card layout (image, title, date, excerpt). Hardcoded placeholder posts.
+
+6. app/blog/[slug]/page.tsx — Blog post detail page with proper article layout, back link, and related posts section.
+
+7. app/faq/page.tsx — Full FAQ page using the same accordion component from the homepage section.
+
+Add generateMetadata to every page using config.seo.titleTemplate.

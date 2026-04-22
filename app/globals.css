@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Offset anchor-link scroll targets so the fixed navbar doesn't cover them */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+:root {
+  --color-background: #ffffff;
+  --color-text: #171717;
+  --color-primary: #1a3c5e;
+  --color-secondary: #2c5f8a;
+  --color-accent: #c8a45e;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+@keyframes scroll-indicator {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 0.9;
+  }
+}
+
+.animate-scroll-indicator {
+  animation: scroll-indicator 2.6s ease-in-out infinite;
+}
