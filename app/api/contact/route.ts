@@ -9,29 +9,24 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { name, email, phone, message, practiceArea, honeypot } = body as {
+    const { name, email, phone, message, practiceArea } = body as {
       name: string;
       email: string;
       phone?: string;
       message: string;
       practiceArea?: string;
-      honeypot?: string;
     };
-
-    }
 
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const result = await resend.emails.send({
+    await resend.emails.send({
       from: FROM,
       to: RECIPIENT,
       subject: "New Contact Form Submission from " + name,
       html: "<h2>New Contact Form Submission</h2><p><b>Name:</b> " + name + "</p><p><b>Email:</b> " + email + "</p><p><b>Phone:</b> " + (phone || "Not provided") + "</p><p><b>Practice Area:</b> " + (practiceArea || "Not specified") + "</p><p><b>Message:</b> " + message + "</p>",
     });
-
-    console.log("Resend result:", JSON.stringify(result));
 
     await resend.emails.send({
       from: FROM,
